@@ -9,7 +9,7 @@ echo "### Using ${NUM_CPUS} cores"
 # setup some build variables
 BUILD_USER=vagrant
 BUILD_GROUP=vagrant
-BUILD_ROOT=/var/kernel_build
+BUILD_ROOT=$PWD/kernel_build
 BUILD_CACHE=$BUILD_ROOT/cache
 ARM_TOOLS=$BUILD_CACHE/tools
 LINUX_KERNEL=$BUILD_CACHE/linux-kernel
