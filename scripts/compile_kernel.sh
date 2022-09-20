@@ -88,7 +88,7 @@ create_kernel_for () {
   mkdir -p $BUILD_RESULTS
   echo $KERNEL_COMMIT > $BUILD_RESULTS/kernel-commit.txt
   cp $LINUX_KERNEL/arch/arm64/configs/bcm2711_defconfig $LINUX_KERNEL/.config
-  cat append_configs >> $LINUX_KERNEL/.config
+  cat "${SRC_DIR}/append_configs" >> $LINUX_KERNEL/.config
   sed -i -E 's/^CONFIG_LOCALVERSION.+$/CONFIG_LOCALVERSION="-v8-jclab"/g' $LINUX_KERNEL/.config
 
   echo "### building kernel and deb packages"
