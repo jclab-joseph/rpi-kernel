@@ -148,7 +148,7 @@ function create_kernel_deb_packages () {
     cp -R $BUILD_RESULTS/$pi_version/modules/lib/modules/* $NEW_KERNEL/modules
   done
   echo "copying dtb files to $NEW_KERNEL/boot"
-  cp $LINUX_KERNEL/arch/arm64/boot/dts/*.dtb $NEW_KERNEL/boot
+  cp $LINUX_KERNEL/arch/arm64/boot/dts/broadcom/bcm2*.dtb $NEW_KERNEL/boot
   # build debian packages
   cd $NEW_KERNEL
 
