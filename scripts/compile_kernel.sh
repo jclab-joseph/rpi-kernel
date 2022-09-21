@@ -99,16 +99,16 @@ create_kernel_for () {
   echo "$version" > $RASPBERRY_FIRMWARE/extra/uname_string$suffix
 
   echo "### installing kernel modules"
-  mkdir -p $BUILD_RESULTS/$PI_VERSION/modules
-  ARCH=arm CROSS_COMPILE=${CCPREFIX[${PI_VERSION}]} INSTALL_MOD_PATH=$BUILD_RESULTS/$PI_VERSION/modules make modules_install -j$NUM_CPUS
+  mkdir -p $BUILD_RESULTS/modules
+  ARCH=arm CROSS_COMPILE=${CCPREFIX[${PI_VERSION}]} INSTALL_MOD_PATH=$BUILD_RESULTS/modules make modules_install -j$NUM_CPUS
 
-  echo "### Listing $BUILD_RESULTS/$PI_VERSION/modules"
-  ls -l $BUILD_RESULTS/$PI_VERSION/modules
+  echo "### Listing $BUILD_RESULTS/modules"
+  ls -l $BUILD_RESULTS/modules
 
   # remove symlinks, mustn't be part of raspberrypi-bootloader*.deb
   echo "### removing symlinks"
-  rm -f $BUILD_RESULTS/$PI_VERSION/modules/lib/modules/*/build
-  rm -f $BUILD_RESULTS/$PI_VERSION/modules/lib/modules/*/source
+  rm -f $BUILD_RESULTS/modules/lib/modules/*/build
+  rm -f $BUILD_RESULTS/modules/lib/modules/*/source
 
   if [[ ! -z $CIRCLE_ARTIFACTS ]]; then
     cp ../*.deb $CIRCLE_ARTIFACTS
@@ -116,7 +116,7 @@ create_kernel_for () {
   mv ../*.deb $BUILD_RESULTS
   echo "###############"
   echo "### END building kernel for ${PI_VERSION}"
-  echo "### Check the $BUILD_RESULTS/$PI_VERSION/kernel.img and $BUILD_RESULTS/$PI_VERSION/modules directory on your host machine."
+  echo "### Check the $BUILD_RESULTS/kernel.img and $BUILD_RESULTS/modules directory on your host machine."
 }
 
 function create_kernel_deb_packages () {
@@ -148,7 +148,7 @@ function create_kernel_deb_packages () {
     cp -R $BUILD_RESULTS/$pi_version/modules/lib/modules/* $NEW_KERNEL/modules
   done
   echo "copying dtb files to $NEW_KERNEL/boot"
-  cp $LINUX_KERNEL/arch/arm/boot/dts/bcm27*.dtb $NEW_KERNEL/boot
+  cp $LINUX_KERNEL/arch/arm64/boot/dts/*.dtb $NEW_KERNEL/boot
   # build debian packages
   cd $NEW_KERNEL
 
