@@ -18,7 +18,7 @@ RASPBERRY_FIRMWARE=$BUILD_CACHE/rpi_firmware
 # running in Circle build
 SRC_DIR=`pwd`
 
-BUILD_RESULTS=$BUILD_ROOT/results/kernel-$NEW_VERSION
+BUILD_RESULTS=$BUILD_ROOT/results
 
 function setup_build_dirs () {
   for dir in $BUILD_ROOT $BUILD_CACHE $BUILD_RESULTS $LINUX_KERNEL $RASPBERRY_FIRMWARE; do
@@ -94,25 +94,25 @@ create_kernel_for () {
   echo "### building kernel and deb packages"
   KBUILD_DEBARCH=arm64 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- make deb-pkg -j$NUM_CPUS
 
-  version=$(${LINUX_KERNEL}/scripts/mkknlimg --ddtk $LINUX_KERNEL/arch/arm64/boot/Image $BUILD_RESULTS/${KERNEL}.img | head -1 | sed 's/Version: //')
-  suffix=""
-  echo "$version" > $RASPBERRY_FIRMWARE/extra/uname_string$suffix
+  #version=$(${LINUX_KERNEL}/scripts/mkknlimg --ddtk $LINUX_KERNEL/arch/arm64/boot/Image $BUILD_RESULTS/${KERNEL}.img | head -1 | sed 's/Version: //')
+  #suffix=""
+  #echo "$version" > $RASPBERRY_FIRMWARE/extra/uname_string$suffix
 
-  echo "### installing kernel modules"
-  mkdir -p $BUILD_RESULTS/modules
-  ARCH=arm CROSS_COMPILE=${CCPREFIX[${PI_VERSION}]} INSTALL_MOD_PATH=$BUILD_RESULTS/modules make modules_install -j$NUM_CPUS
+  #echo "### installing kernel modules"
+  #mkdir -p $BUILD_RESULTS/modules
+  #ARCH=arm CROSS_COMPILE=${CCPREFIX[${PI_VERSION}]} INSTALL_MOD_PATH=$BUILD_RESULTS/modules make modules_install -j$NUM_CPUS
 
-  echo "### Listing $BUILD_RESULTS/modules"
-  ls -l $BUILD_RESULTS/modules
+  #echo "### Listing $BUILD_RESULTS/modules"
+  #ls -l $BUILD_RESULTS/modules
 
   # remove symlinks, mustn't be part of raspberrypi-bootloader*.deb
-  echo "### removing symlinks"
-  rm -f $BUILD_RESULTS/modules/lib/modules/*/build
-  rm -f $BUILD_RESULTS/modules/lib/modules/*/source
-
-  if [[ ! -z $CIRCLE_ARTIFACTS ]]; then
-    cp ../*.deb $CIRCLE_ARTIFACTS
-  fi
+  #echo "### removing symlinks"
+  #rm -f $BUILD_RESULTS/modules/lib/modules/*/build
+  #rm -f $BUILD_RESULTS/modules/lib/modules/*/source
+  #
+  #if [[ ! -z $CIRCLE_ARTIFACTS ]]; then
+  #  cp ../*.deb $CIRCLE_ARTIFACTS
+  #fi
   mv ../*.deb $BUILD_RESULTS
   echo "###############"
   echo "### END building kernel for ${PI_VERSION}"

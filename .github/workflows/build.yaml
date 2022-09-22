@@ -15,6 +15,9 @@ jobs:
       - name: Build
         run: |
           ./scripts/compile_kernel.sh
+      - name: Zip
+        run: |
+          zip -r build_results.zip build_results/
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -22,5 +25,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
-            build_results/kernel/*
+            build_results.zip
 
