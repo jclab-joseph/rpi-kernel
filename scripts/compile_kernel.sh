@@ -11,7 +11,7 @@ BUILD_ROOT=$PWD/kernel_build
 BUILD_CACHE=$BUILD_ROOT/cache
 LINUX_KERNEL=$BUILD_CACHE/linux-kernel
 #NEW_VERSION=1.`date +%Y%m%d-%H%M%S`
-NEW_VERSION="1.20220918-jclab1"
+NEW_VERSION="1:1.20220918-jclab1"
 LINUX_KERNEL_COMMIT=5b775d7293eb75d6dfc9c5ffcb95c5012cd0c3f8 # Linux 5.15 1.20220830
 RASPBERRY_FIRMWARE=$BUILD_CACHE/rpi_firmware
 
@@ -148,7 +148,7 @@ function create_kernel_deb_packages () {
     cp -R $BUILD_RESULTS/$pi_version/modules/lib/modules/* $NEW_KERNEL/modules
   done
   echo "copying dtb files to $NEW_KERNEL/boot"
-  cp $LINUX_KERNEL/arch/arm64/boot/dts/*.dtb $NEW_KERNEL/boot
+  cp $LINUX_KERNEL/arch/arm64/boot/dts/broadcom/bcm2*.dtb $NEW_KERNEL/boot
   # build debian packages
   cd $NEW_KERNEL
 
